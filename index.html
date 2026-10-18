@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sophia AI — Real-Time Conversational Voice Assistant for Windows 10 & 11</title>
+  <meta name="description" content="Sophia AI is a state-of-the-art conversational voice AI assistant for Windows 10 & 11 by Muhammad Junaid (Mobo Devs Studio). Sub-second voice responsiveness, dual Sophia & Leo personas, Pakistani Urdu default fluency, and hands-free desktop execution.">
+  <link rel="icon" type="image/png" href="icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    /* Specific Home Styles for Google Verification Box & Architecture */
+    .compliance-card {
+      background: #080e1a;
+      border: 1px solid rgba(0, 229, 255, 0.25);
+      border-radius: 14px;
+      padding: 38px 40px;
+      margin-bottom: 40px;
+      box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.7);
+    }
+    .compliance-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .compliance-pill {
+      background: rgba(0, 229, 255, 0.12);
+      border: 1px solid rgba(0, 229, 255, 0.3);
+      color: var(--accent-cyan);
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 9999px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .oauth-box {
+      background: rgba(56, 189, 248, 0.04);
+      border: 1px solid rgba(56, 189, 248, 0.2);
+      border-radius: 12px;
+      padding: 26px 30px;
+      margin-top: 28px;
+    }
+    .oauth-box h4 {
+      font-size: 15.5px;
+      font-weight: 600;
+      color: var(--accent-sky);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .oauth-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 12px;
+    }
+    .oauth-list li {
+      font-size: 13.5px;
+      color: #cbd5e1;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      line-height: 1.55;
+    }
+    .oauth-list li span.dot {
+      color: var(--accent-cyan);
+      font-weight: 700;
+    }
+
+    /* Founder Spotlight Banner */
+    .founder-banner {
+      background: linear-gradient(135deg, rgba(8, 14, 26, 0.95) 0%, rgba(13, 27, 42, 0.95) 100%);
+      border: 1px solid rgba(0, 229, 255, 0.2);
+      border-radius: 16px;
+      padding: 36px 40px;
+      margin: 40px 0;
+      display: flex;
+      gap: 32px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .founder-avatar {
+      width: 84px;
+      height: 84px;
+      border-radius: 50%;
+      border: 2px solid var(--accent-cyan);
+      background: #0f172a;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      box-shadow: 0 0 25px rgba(0, 229, 255, 0.3);
+    }
+    .founder-meta {
+      flex: 1;
+      min-width: 280px;
+    }
+
+    /* Centered Hero Layout */
+    .hero-centered {
+      padding: 64px 0 50px;
+      text-align: center;
+      max-width: 860px;
+      margin: 0 auto;
+    }
+
+    /* Persona Chips */
+    .persona-chips {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+    .persona-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 6px 13px;
+      border-radius: 9999px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: #94a3b8;
+      white-space: nowrap;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      line-height: 1;
+      user-select: none;
+    }
+    .persona-chip:hover {
+      background: rgba(0, 229, 255, 0.08);
+      border-color: rgba(0, 229, 255, 0.3);
+      color: #cbd5e1;
+    }
+    .persona-chip.active {
+      background: rgba(0, 229, 255, 0.15);
+      border-color: var(--accent-cyan);
+      color: var(--accent-cyan);
+      box-shadow: 0 0 14px rgba(0, 229, 255, 0.25);
+    }
+
+    @media (max-width: 992px) {
+      .persona-chips {
+        justify-content: center;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <header class="header-wrapper">
+    <nav class="navbar">
+      <a href="index.html" class="nav-brand">
+        <img src="logo.png" alt="Sophia AI Logo" class="nav-logo">
+        <span class="brand-title">Sophia AI</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="index.html" class="active">Home</a></li>
+        <li><a href="features.html">Features</a></li>
+        <li><a href="how-it-works.html">How It Works</a></li>
+        <li><a href="download.html">Download</a></li>
+        <li><a href="docs.html">Docs</a></li>
+        <li><a href="pricing.html">Pricing</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="faq.html">FAQ</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+      <div class="nav-actions">
+        <div class="theme-switcher" title="Switch Sci-Fi Accent Theme">
+          <button class="theme-dot theme-cyan active" data-theme="cyan" aria-label="Cyber Cyan Accent"></button>
+          <button class="theme-dot theme-emerald" data-theme="emerald" aria-label="Emerald Matrix Accent"></button>
+          <button class="theme-dot theme-violet" data-theme="violet" aria-label="Neon Violet Accent"></button>
+        </div>
+        <a href="download.html" class="btn btn-primary btn-sm">Get Sophia v2.2.0</a>
+        <button class="mobile-toggle" aria-label="Toggle navigation" aria-expanded="false">
+          <svg class="svg-icon" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </button>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Mobile Drawer -->
+  <div class="mobile-drawer">
+    <a href="index.html" class="active">Home</a>
+    <a href="features.html">Features</a>
+    <a href="how-it-works.html">How It Works</a>
+    <a href="download.html">Download</a>
+    <a href="docs.html">Docs</a>
+    <a href="pricing.html">Pricing</a>
+    <a href="about.html">About</a>
+    <a href="faq.html">FAQ</a>
+    <a href="contact.html">Contact</a>
+    <a href="privacy.html">Privacy Policy</a>
+    <a href="terms.html">Terms of Service</a>
+  </div>
+
+  <main class="container">
+    <!-- Hero Section -->
+    <section class="hero-centered">
+      <div class="persona-chips" style="justify-content: center;">
+        <span class="persona-chip active" title="Sophia: Warm &amp; Collaborative Voice Persona">
+          <svg class="svg-icon svg-icon-sm" viewBox="0 0 24 24"><path d="M12 2a5 5 0 0 1 5 5v2a5 5 0 0 1-10 0V7a5 5 0 0 1 5-5z"/><path d="M19 21v-2a6 6 0 0 0-12 0v2"/></svg>
+          Persona: Sophia (Warm)
+        </span>
+        <span class="persona-chip" title="Leo: Direct &amp; Technical Voice Persona">
+          <svg class="svg-icon svg-icon-sm" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          Persona: Leo (Direct)
+        </span>
+        <span class="persona-chip" title="Foundational Default Spoken Language">
+          <svg class="svg-icon svg-icon-sm" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10z"/></svg>
+          اردو Default Fluency
+        </span>
+      </div>
+
+      <div class="page-badge" style="margin-bottom: 20px;">
+        <span>v2.2.0 PRODUCTION</span>
+        <span style="margin: 0 4px;">•</span>
+        <span>WINDOWS 10 &amp; 11 NATIVE</span>
+      </div>
+
+      <h1 class="page-title" style="font-size: 46px; margin-bottom: 20px; line-height: 1.18;">
+        The Jarvis-Class Voice AI.<br><span>Autonomous on Windows 10 &amp; 11.</span>
+      </h1>
+
+      <p class="page-subtitle" style="font-size: 17px; line-height: 1.7; max-width: 760px; margin: 0 auto 32px; color: var(--text-muted);">
+        Created by <strong>Muhammad Junaid</strong> at <strong>Mobo Devs Studio</strong>. Sophia delivers sub-second conversational voice, dual Sophia &amp; Leo personas, native Pakistani Urdu &amp; universal multilingual fluency, and hands-free desktop execution—from WhatsApp VoIP calls and VS Code dev tooling to high-speed Word document typing.
+      </p>
+
+      <!-- CTAs -->
+      <div style="display: flex; gap: 16px; align-items: center; justify-content: center; flex-wrap: wrap;">
+        <a href="download.html" class="btn btn-primary btn-lg">
+          <svg class="svg-icon" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+          Download v2.2.0 (.exe)
+        </a>
+        <a href="docs.html" class="btn btn-secondary btn-lg">User Guide &amp; Docs</a>
+      </div>
+    </section>
+
+    <!-- Creator & Studio Spotlight Banner -->
+    <section class="founder-banner">
+      <div class="founder-avatar">
+        <svg class="svg-icon" viewBox="0 0 24 24" style="width: 44px; height: 44px; stroke: var(--accent-cyan);"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      </div>
+      <div class="founder-meta">
+        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 6px; flex-wrap: wrap;">
+          <h3 style="margin: 0; color: #ffffff; font-size: 20px; font-weight: 700;">Muhammad Junaid</h3>
+          <span class="compliance-pill">Creator &amp; Lead Architect</span>
+          <span style="font-size: 13px; color: var(--text-muted);">Mobo Devs Studio (mobodevs.net)</span>
+        </div>
+        <p style="color: #94a3b8; font-size: 14px; line-height: 1.6; margin: 0 0 10px 0;">
+          Sophia was created and engineered by Muhammad Junaid under the open-source MIT License. Designed to overcome the limits of traditional chat bots by giving Windows users a true desktop voice assistant with deep OS control, local privacy, and native Pakistani Urdu fluency.
+        </p>
+        <div style="display: flex; gap: 16px; font-size: 13px;">
+          <a href="https://github.com/rdxtoolss-glitch" target="_blank" rel="noopener noreferrer" style="color: var(--accent-cyan); text-decoration: underline;">GitHub (@rdxtoolss-glitch)</a>
+          <a href="https://mobodevs.net" target="_blank" rel="noopener noreferrer" style="color: var(--accent-sky); text-decoration: underline;">Mobo Devs Studio</a>
+          <a href="about.html" style="color: #cbd5e1; text-decoration: underline;">Read Full Story &rarr;</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Application Purpose Section (Google Verification Compliance Core) -->
+    <section id="purpose" class="section">
+      <div class="compliance-card">
+        <div class="compliance-header">
+          <span class="compliance-pill">Application Purpose &amp; Functionality</span>
+        </div>
+        <h2 class="section-title">What is Sophia AI and What Does It Do?</h2>
+        <p class="section-desc" style="text-align: left; margin: 0 0 24px 0;">
+          Sophia AI is an advanced Windows desktop voice assistant created by <strong>Muhammad Junaid</strong> at <strong>Mobo Devs Studio</strong> (hosted at <strong>mobodevs.net</strong>). Built with real-time conversational voice intelligence, Sophia acts as an autonomous copilot for your PC, executing multi-step workflows, system commands, and document authoring through fluid speech.
+        </p>
+
+        <div class="cards-grid">
+          <div class="card" style="background: rgba(255, 255, 255, 0.025);">
+            <div class="card-icon">
+              <svg class="svg-icon" viewBox="0 0 24 24"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+            </div>
+            <h3 class="card-title">Real-Time Voice Dialogue</h3>
+            <p class="card-text">
+              Natural speech with sub-second response times. Sophia listens, comprehends context, and converses fluidly with instant barge-in interruption capability.
+            </p>
+          </div>
+
+          <div class="card" style="background: rgba(255, 255, 255, 0.025);">
+            <div class="card-icon">
+              <svg class="svg-icon" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+            </div>
+            <h3 class="card-title">Autonomous Desktop Action</h3>
+            <p class="card-text">
+              Execute WhatsApp voice calls and messages, write and edit code in VS Code, type documents in Word, manage display brightness, and control applications hands-free.
+            </p>
+          </div>
+
+          <div class="card" style="background: rgba(255, 255, 255, 0.025);">
+            <div class="card-icon">
+              <svg class="svg-icon" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            </div>
+            <h3 class="card-title">Local-First DPAPI Security</h3>
+            <p class="card-text">
+              User preferences, custom languages, and conversational memories are encrypted with Windows DPAPI on your local SSD. Zero cloud leaks, zero ads.
+            </p>
+          </div>
+        </div>
+
+        <!-- Google OAuth 2.0 Integration Disclosure -->
+        <div id="google-data" class="oauth-box">
+          <h4>
+            <svg class="svg-icon svg-icon-sm" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            Google OAuth 2.0 &amp; Workspace Data Usage Disclosure
+          </h4>
+          <p style="color: var(--text-muted); font-size: 13.5px; line-height: 1.6; margin-bottom: 12px;">
+            Sophia provides an optional <strong>Sign in with Google</strong> integration in desktop settings. When connected, Sophia enables voice-activated Google Workspace integration (Google Calendar event management, Google Tasks completion, and Gmail draft composition) alongside profile identification.
+          </p>
+          <ul class="oauth-list">
+            <li>
+              <span class="dot">•</span>
+              <div>
+                <strong>Purpose of Google Sign-In &amp; Workspace Access:</strong> Google OAuth 2.0 authenticates the user, securely stores refresh tokens in the local encrypted directory (<code>%APPDATA%\Sophia\data\google_tokens.json</code>), and allows the user to say voice commands such as <em>"What's on my Google Calendar today?"</em>, <em>"Add a reminder to Google Tasks"</em>, or <em>"Draft an email in Gmail"</em>.
+              </div>
+            </li>
+            <li>
+              <span class="dot">•</span>
+              <div>
+                <strong>Strict User-Granted Scopes:</strong> Scopes requested are strictly limited to user-approved actions (OpenID profile for user greeting, Google Calendar for event scheduling, Google Tasks, and Gmail drafting/sending).
+              </div>
+            </li>
+            <li>
+              <span class="dot">•</span>
+              <div>
+                <strong>Local Storage &amp; Zero Selling:</strong> All OAuth tokens and retrieved calendar/task data reside exclusively on the user's local Windows workstation. Sophia never sells, leases, or transfers Google user data to third-party brokers, advertising networks, or external LLM training datasets.
+              </div>
+            </li>
+            <li>
+              <span class="dot">•</span>
+              <div>
+                <strong>Google API Services User Data Policy:</strong> Sophia AI's use and transfer of information received from Google APIs to any other app adheres to the <a href="https://developers.google.com/terms/api-services-user-data-policy" target="_blank" rel="noopener noreferrer" style="color: var(--accent-cyan); text-decoration: underline;">Google API Services User Data Policy</a>, including the Limited Use requirements.
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Core Desktop Capabilities Grid -->
+    <section id="features" class="section">
+      <div class="section-head">
+        <span class="page-badge">Desktop Capabilities</span>
+        <h2 class="section-title">Everything Sophia Can Do on Your PC</h2>
+        <p class="section-desc">
+          Hands-free voice productivity designed specifically for Windows 10 &amp; 11 workflows.
+        </p>
+      </div>
+
+      <div class="cards-grid">
+        <!-- 1. WhatsApp Voice & Messaging -->
+        <div class="card">
+          <div class="card-icon">
+            <svg class="svg-icon" viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+          </div>
+          <span class="card-tag">COMMUNICATION</span>
+          <h3 class="card-title">WhatsApp Desktop VoIP &amp; Messaging</h3>
+          <p class="card-text">
+            Initiate WhatsApp voice and video calls, answer or end incoming calls, mute audio, search conversations, draft replies, and send messages completely hands-free.
+          </p>
+        </div>
+
+        <!-- 2. Developer Tooling & VS Code -->
+        <div class="card">
+          <div class="card-icon">
+            <svg class="svg-icon" viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+          </div>
+          <span class="card-tag">DEVELOPER TOOLING</span>
+          <h3 class="card-title">Intelligent Coding Companion &amp; VS Code</h3>
+          <p class="card-text">
+            Generate and edit code files, inspect project trees, execute automated unit tests, and automatically open and focus Visual Studio Code right at the modified line.
+          </p>
+        </div>
+
+        <!-- 3. Windows System Commander & Fast Typing -->
+        <div class="card">
+          <div class="card-icon">
+            <svg class="svg-icon" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+          </div>
+          <span class="card-tag">SYSTEM &amp; DOCUMENTS</span>
+          <h3 class="card-title">System Controls &amp; Sub-15ms Word Typing</h3>
+          <p class="card-text">
+            Adjust volume, monitor brightness, snap windows, and utilize an ultra-fast document typing engine capable of writing comprehensive essays and 100+ page academic theses in Word.
+          </p>
+        </div>
+
+        <!-- 4. Autonomous Computer Navigation -->
+        <div class="card">
+          <div class="card-icon">
+            <svg class="svg-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m4.93 4.93 4.24 4.24"/><path d="m14.83 9.17 4.24-4.24"/><path d="m14.83 14.83 4.24 4.24"/><path d="m9.17 14.83-4.24 4.24"/></svg>
+          </div>
+          <span class="card-tag">AUTOMATION</span>
+          <h3 class="card-title">Autonomous Desktop Navigation</h3>
+          <p class="card-text">
+            Navigate software interfaces, scroll multi-page documents, click buttons, fill out web and desktop forms, and execute multi-step computer tasks without touching a mouse.
+          </p>
+        </div>
+
+        <!-- 5. Continuous Screen Perception -->
+        <div class="card">
+          <div class="card-icon">
+            <svg class="svg-icon" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          </div>
+          <span class="card-tag">VISION INTELLIGENCE</span>
+          <h3 class="card-title">Continuous Screen Perception &amp; OCR</h3>
+          <p class="card-text">
+            Ask questions about whatever is on your displays: diagnose terminal syntax errors, extract text via OCR, or ask for summaries of open documents and graphs.
+          </p>
+        </div>
+
+        <!-- 6. Real-Time Web Research & Weather -->
+        <div class="card">
+          <div class="card-icon">
+            <svg class="svg-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+          </div>
+          <span class="card-tag">WEB &amp; WEATHER</span>
+          <h3 class="card-title">Live Web Research &amp; Weather</h3>
+          <p class="card-text">
+            Execute real-time web searches across academic, financial, and tech sources, summarize articles, and check instant local weather forecasts on demand.
+          </p>
+        </div>
+
+        <!-- 7. Browser Automation & Media Control -->
+        <div class="card">
+          <div class="card-icon">
+            <svg class="svg-icon" viewBox="0 0 24 24"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+          </div>
+          <span class="card-tag">MEDIA &amp; BROWSER</span>
+          <h3 class="card-title">Browser Automation &amp; Media Control</h3>
+          <p class="card-text">
+            Full Google Chrome control: launch websites, switch and close tabs, fill forms, and control YouTube and Spotify playback (play, pause, next track, speed).
+          </p>
+        </div>
+
+        <!-- 8. Google Workspace Integration -->
+        <div class="card">
+          <div class="card-icon">
+            <svg class="svg-icon" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          </div>
+          <span class="card-tag">WORKSPACE</span>
+          <h3 class="card-title">Google Calendar, Tasks &amp; Gmail</h3>
+          <p class="card-text">
+            Check your schedule, create calendar events, mark to-dos complete, and compose Gmail drafts through natural voice commands without opening a browser.
+          </p>
+        </div>
+
+        <!-- 9. Persistent Memory & Multilingual Engine -->
+        <div class="card">
+          <div class="card-icon">
+            <svg class="svg-icon" viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+          </div>
+          <span class="card-tag">MEMORY &amp; URDU</span>
+          <h3 class="card-title">Persistent Memory &amp; Multilingual Fluency</h3>
+          <p class="card-text">
+            Default Pakistani Urdu (اردو) with feminine/masculine grammatical inflections, instant runtime switching to any world language or accent, and encrypted local memory.
+          </p>
+        </div>
+      </div>
+
+      <div style="text-align: center; margin-top: 36px;">
+        <a href="features.html" class="btn btn-secondary btn-lg">Explore Detailed Feature Capabilities &rarr;</a>
+      </div>
+    </section>
+
+    <!-- Architecture & Real-Time Pipeline Teaser -->
+    <section class="section" style="padding-top: 10px;">
+      <div class="card" style="padding: 40px;">
+        <div style="display: flex; gap: 32px; align-items: center; flex-wrap: wrap;">
+          <div style="flex: 1; min-width: 300px;">
+            <span class="card-tag">Conversational Performance</span>
+            <h2 style="font-size: 26px; font-weight: 700; color: #ffffff; margin: 12px 0 14px;">
+              Sub-Second Conversational Voice Pipeline
+            </h2>
+            <p style="color: var(--text-muted); font-size: 14.5px; margin-bottom: 20px;">
+              Sophia delivers fluid, human-like pacing: acoustic echo cancellation eliminates speaker feedback, natural turn pacing detects when you pause, and instant barge-in lets you interrupt effortlessly at any point.
+            </p>
+            <a href="how-it-works.html" class="btn btn-primary">How the Voice Pipeline Works</a>
+          </div>
+          <div style="flex: 1; min-width: 300px; background: rgba(0, 0, 0, 0.4); border: 1px solid var(--card-border); border-radius: 12px; padding: 22px;">
+            <div style="font-family: var(--font-mono); font-size: 12.5px; line-height: 1.8; color: #cbd5e1;">
+              <div><span style="color: var(--accent-cyan);">01. Audio Input:</span> High-Fidelity Microphone Capture</div>
+              <div><span style="color: var(--accent-sky);">02. Streaming:</span> Low-Latency Bidirectional Channel</div>
+              <div><span style="color: #a855f7;">03. Intelligence:</span> Real-Time Conversational Comprehension</div>
+              <div><span style="color: var(--success);">04. Action:</span> Instant Windows Desktop Execution</div>
+              <div style="margin-top: 10px; padding-top: 8px; border-top: 1px solid var(--card-border); color: var(--accent-cyan); font-weight: 700;">
+                Turnaround: Sub-Second Natural Fluid Dialogue
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA Banner -->
+    <section class="cta-banner">
+      <h2>Experience Real-Time Voice Computing on Windows</h2>
+      <p>
+        Download the official Sophia v2.2.0 installer or inspect the user documentation.
+      </p>
+      <div class="cta-actions">
+        <a href="download.html" class="btn btn-primary btn-lg">Download Sophia v2.2.0</a>
+        <a href="docs.html" class="btn btn-secondary btn-lg">Browse User Guide</a>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-brand">
+          <div class="footer-logo-row">
+            <img src="logo.png" alt="Sophia Logo" style="width: 30px; height: 30px; object-fit: contain;">
+            <span style="font-weight: 700; color: #ffffff; font-size: 16px;">Sophia AI</span>
+          </div>
+          <p class="footer-desc">
+            Jarvis-class conversational desktop voice assistant for Windows 10 & 11. Created and engineered by <strong>Muhammad Junaid</strong> at <strong>Mobo Devs Studio</strong> (mobodevs.net). Free and open-source under the MIT License.
+          </p>
+        </div>
+
+        <div class="footer-links-group">
+          <div class="footer-col">
+            <h5>Product</h5>
+            <ul>
+              <li><a href="features.html">Features &amp; Capabilities</a></li>
+              <li><a href="how-it-works.html">How It Works</a></li>
+              <li><a href="download.html">Download v2.2.0</a></li>
+              <li><a href="docs.html">User Guide</a></li>
+              <li><a href="pricing.html">Pricing &amp; Open Source</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-col">
+            <h5>Company &amp; Creator</h5>
+            <ul>
+              <li><a href="about.html">About Muhammad Junaid</a></li>
+              <li><a href="https://github.com/rdxtoolss-glitch" target="_blank" rel="noopener noreferrer">GitHub Profile</a></li>
+              <li><a href="https://mobodevs.net" target="_blank" rel="noopener noreferrer">Mobo Devs Studio</a></li>
+              <li><a href="changelog.html">Changelog</a></li>
+              <li><a href="faq.html">FAQ</a></li>
+              <li><a href="contact.html">Contact Support</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-col">
+            <h5>Legal &amp; Security</h5>
+            <ul>
+              <li><a href="privacy.html">Privacy Policy</a></li>
+              <li><a href="terms.html">Terms of Service</a></li>
+              <li><a href="#google-data">Google Data Disclosure</a></li>
+              <li><a href="https://developers.google.com/terms/api-services-user-data-policy" target="_blank" rel="noopener noreferrer">Google User Data Policy</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>© 2026 Muhammad Junaid, Mobo Devs Studio (mobodevs.net). Released under MIT License.</div>
+        <div style="display: flex; gap: 20px;">
+          <a href="privacy.html">Privacy Policy</a>
+          <a href="terms.html">Terms of Service</a>
+          <a href="mailto:rdxtoolss@gmail.com">rdxtoolss@gmail.com</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
